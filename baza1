@@ -1,0 +1,125 @@
+//1. EntityFrameworkCore
+//.Relational
+//.Design
+//.Tools
+//Pomelo...MySql
+
+//2. scaffold-dbContext "Server = cfif31.ru; Port = 3306; User ID = ISPr23-35_YanzytovaAA; Database = ISPr23-35_YanzytovaAA_; Password = ISPr23-35_YanzytovaAA; Character Set = utf8" Pomelo.EntityFrameworkCore.MySql
+
+                      //MainWindow.xaml
+
+    Title="Кушай Вкусно" MinHeight="450" MinWidth="800">
+<Grid>
+    <Frame x:Name="Frame1"/>
+</Grid>
+
+public MainWindow()
+{
+    InitializeComponent();
+    Frame1.Navigate(new Authorization());
+}
+
+                      //CoreModel
+                      
+ private static CoreModel instanse;
+ public static CoreModel init()
+ {
+     if (instanse == null)
+     {
+         instanse = new CoreModel();
+     }
+     return instanse;
+ }  
+
+                     //Authorization
+
+private void btnAuthorization_Click(object sender, RoutedEventArgs e)
+{
+    if (CoreModel.init().Users.FirstOrDefault(x => x.Login == tbLogin.Text && x.Password == pbPassword.Password && x.Role == "Администратор") != null)
+    { 
+        MessageBox.Show("Вы авторизовались под k");
+        NavigationService.Navigate(new AdminPage());
+    }
+    else if (CoreModel.init().Users.FirstOrDefault(x => x.Role == "Официант") != null)
+    {
+        MessageBox.Show("Вы авторизовались под ");
+        NavigationService.Navigate(new ClientPage());
+    }
+    else
+    {
+        MessageBox.Show("Неправильный логин или пароль");
+    }
+}
+
+
+
+                    //AdminPage
+
+<Grid.ColumnDefinitions>
+    <ColumnDefinition Width="0.3*"/>
+    <ColumnDefinition/>
+</Grid.ColumnDefinitions>
+<StackPanel Grid.Column="0" Background="#FFA9F6F4">
+    <TextBlock Text="Поиск" FontSize="20" Margin="15 0 0 0"/>
+    <TextBox x:Name="tbSearch" Width="150" Height="20" Margin="0 10"/>
+    <TextBlock Text="Сортировка" FontSize="20" Margin="15 0 0 0"/>
+    <ComboBox Width="150" Height="20" Margin="0 10">
+        <ComboBoxItem Content="По возрастанию"/>
+        <ComboBoxItem Content="По убыванию"/>
+    </ComboBox>
+    <TextBlock Text="Фильтрация" FontSize="20" Margin="15 0 0 0"/>
+    <ComboBox Width="150" Height="20" Margin="0 10" >
+        <ComboBoxItem Content="1"/>
+        <ComboBoxItem Content="2"/>
+    </ComboBox>
+</StackPanel>
+<ListBox Grid.Column="1" Background="#FFA9F6F4" x:Name="Lw1">
+    <ListBox.ItemTemplate>
+        <DataTemplate>
+            <StackPanel Width="607" >
+                <Image  Source="{Binding Photo}" Width="150" Height="200"/>
+                <TextBlock Text="блюда: " FontSize="20">
+                <Run Text="{Binding Dish}" FontSize="20"/>
+                </TextBlock>
+                <WrapPanel>
+                    <TextBlock Text="цена: " FontSize="20">
+                    <Run Text="{Binding Price}" FontSize="20"/>
+                    </TextBlock>
+                    <TextBlock Text="категория: " FontSize="20" Margin="300 0 0 0">
+                    <Run Text="{Binding Category}" FontSize="20"/>
+                    </TextBlock>
+                    <TextBlock Text="ингридиенты: " FontSize="20" Margin="300 0 0 0">
+                    <Run Text="{Binding Ingridients}" FontSize="20"/>
+                    </TextBlock>
+                </WrapPanel>
+                <WrapPanel>
+                    <Button Width="150" Height="20" Content="Редактировать" />
+                    <Button Width="150" Height="20" Margin="200 0 0 0" Content="Удалить"/>
+                </WrapPanel>
+            </StackPanel>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+</ListBox>
+<Button x:Name="BtnAdd" Width="150" Height="30" VerticalAlignment="Bottom" Margin="0 0 0 50" Content="Создать" Background="#FF2BAEE5" Foreground="White"/>
+<Button x:Name="BtnOrders" Width="150" Height="30" VerticalAlignment="Bottom" Margin="0 0 0 100" Content="Заказы" Background="#FF2BAEE5" Foreground="White" Click="BtnOrders_Click"/>
+
+
+                                       //AdminPage.xaml.cs
+public AdminPage()
+{
+    InitializeComponent();
+    ListView1();
+}
+
+public void ListView1()
+{
+    Lw1.Items.Clear();
+    var list = new List<Dish>();
+    list = CoreModel.init().Dishes.ToList();
+    Lw1.ItemsSource = list;
+}
+
+private void BtnOrders_Click(object sender, RoutedEventArgs e)
+{
+    NavigationService.Navigate(new OrderPage());
+}
