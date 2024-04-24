@@ -50,7 +50,16 @@ private void btnAuthorization_Click(object sender, RoutedEventArgs e)
         MessageBox.Show("Неправильный логин или пароль");
     }
 }
-
+//разметка
+ <StackPanel Margin="337,38,267,40">
+     <TextBlock TextWrapping="Wrap" Text="Кушай Вкусно" HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="22" Foreground="Black" Margin="0,0,0,20"/>
+     <Image Height="87" Source="C:\Users\Mvideo\Downloads\ИСП41ЯнзытоваАнна\Cafe\Cafe\Resources\logo (1).png" Stretch="Fill" Width="88" Margin="0,0,0,20"/>
+     <TextBlock  TextWrapping="Wrap" Text="логин" FontFamily="Comic Sans MS" HorizontalAlignment="Left"/>
+     <TextBox x:Name ="tbLogin" TextWrapping="Wrap" Text="" Width="190" Height="18" HorizontalAlignment="Left"/>
+     <TextBlock TextWrapping="Wrap" Text="пароль" FontFamily="Comic Sans MS" Margin="0,20,0,0"/>
+     <PasswordBox x:Name="pbPassword" Width="183" HorizontalAlignment="Left" Height="19" RenderTransformOrigin="0.5,0.5"/>
+     <Button x:Name="btnAuthorization" Content="войти" Margin="0,34,0,0" Background="#FF2BAEE5" Height="25" Width="134" HorizontalAlignment="Center" FontFamily="Comic Sans MS" Click="btnAuthorization_Click"/>
+ </StackPanel>
 
 
                     //AdminPage
